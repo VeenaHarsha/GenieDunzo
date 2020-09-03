@@ -1,0 +1,83 @@
+import React, { useState, useEffect , useContext} from 'react'
+import { AppContext } from '../../context/app/AppContext'
+import { AuthContext } from '../../context/auth/AuthContext'
+import Cart from '../Cart'
+
+function Item ({ item,  handleUpdateItem, handleAddItem, removeFromCart }) {
+  const {cart, getCartList, selStoreId, selStoreName} = useContext(AppContext)
+  const { user } = useContext(AuthContext)
+  let qty = cart.filter(cItem => cItem.itemid === item.id && cItem.userid === user.id)
+  let q = 0 || (qty.length ? qty[0].quantity : 0)
+  // let q = 0 || (qty.length ? qty[0].quantity : 0)
+  const [showIncrDecr, setShowIncrDecr] = useState(false)
+  const [quantity, setQuantity] = useState(q)
+
+
+  const onAddItem = (event, item, quantity) => {
+    event.preventDefault()
+    setQuantity(quantity => quantity + 1)
+    setShowIncrDecr(true)
+    handleAddItem(item, quantity)
+  }
+
+  const incrementValue = () => {
+    setQuantity(quantity + 1)
+  }
+
+  const decrementValue = () => {
+    setQuantity(quantity - 1)
+  }
+
+  const backToAddBtn = async () => {
+    setQuantity(quantity - 1)
+    setShowIncrDecr(false)
+    removeFromCart(item.id)
+  }
+
+  const onItemUpdate = async (event, item) => {
+    if (event.target.name === 'decr') {
+      if (quantity === 1) {
+        backToAddBtn()
+      } else {
+        decrementValue()
+      }
+    }else{
+      incrementValue()
+      setShowIncrDecr(true)
+    }
+    //  handleUpdateItem(item, quantity)
+  } 
+      
+  useEffect(() => {
+    q = cart.filter(cItem => cItem.itemid === item.id && cItem.userid === user.id)
+    setShowIncrDecr((quantity > 0 ? true : false))
+  }, [])
+
+  useEffect(() => {
+    getCartList(selStoreId, user.id)
+    if(quantity > 0){
+      handleUpdateItem(item, quantity)
+      setShowIncrDecr((quantity > 0 ? true : false))
+    }
+  }, [quantity])
+
+  return (
+  <>
+    <div key={item.id} className='item-div'>
+      <span className='item-name'>{item.itemname}</span>
+      <span className='item-price'>{item.price}</span>
+      <div className='price-div'>
+        {!showIncrDecr && <button name='incr' className='incr-decr' onClick={(e) => onAddItem(e, item, 1)}>+ ADD</button>}
+        {showIncrDecr &&
+          <>
+            <button className='incr-decr' name='incr' onClick={(e) => onItemUpdate(e, item)}>+</button>
+            <span className='qty-value'>{quantity}</span>
+            <button className='incr-decr' name='decr' onClick={(e) => onItemUpdate(e, item)}>-</button>
+          </>}
+      </div>
+    </div>
+    
+  </>
+  )
+}
+export default Item

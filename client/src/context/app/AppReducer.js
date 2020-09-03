@@ -1,5 +1,18 @@
 export default (state, action) => {
   switch (action.type) {
+    
+    case 'IS_ACCEPTED': {
+      return {
+        ...state,
+        isAccepted: action.payload
+      }
+    }
+    case 'GET_DELIVERY_LIST': {
+      return {
+        ...state,
+        deliveryDetails: action.payload[0]
+      }
+    }
     case 'GET_CAT_LIST': {
       return {
         ...state,
@@ -16,29 +29,29 @@ export default (state, action) => {
     }
 
     case 'GET_STORE_LIST': {
-      console.log('GET STORE LIST:', action.payload)
       return {
         ...state,
-        storeList: action.payload //[...state.storeList, ...action.payload]
+        storeList: action.payload 
       }
     }
     case 'HANDLE_STORE_CLICK': {
       return {
         ...state,
         selStoreId: action.payload.selStoreId,
-        selStoreName: action.payload.selStoreName
+        selStoreName: action.payload.selStoreName,
+        storeAddress: action.payload.storeAddress
       }
     }
     case 'GET_ITEMS_LIST': {
       return {
         ...state,
-        itemsList: action.payload // [...state.itemsList, ...action.payload]
+        itemsList: action.payload
       }
     }
     case 'GET_STORE_CAT_LIST': {
       return {
         ...state,
-        storeCats:  action.payload // [...state.storeCats, ...action.payload]
+        storeCats:  action.payload
       }
     }
     case 'SHOWINCRDECR': {
@@ -64,16 +77,21 @@ export default (state, action) => {
       }
     }
     case 'DELETE_CART': {
-      console.log('VV:', action.payload)
       return {
         ...state,
         cart: state.cart.filter(cart => cart.itemid !== action.payload)
       }
     }
+    case 'DELETE_ALL_CART': {
+      return {
+        ...state,
+        cart: [...state.cart, ...action.payload]
+      }
+    }
     case 'GET_CART_LIST': {
       return {
         ...state,
-        cart: action.payload //[...state.cart, ...action.payload]
+        cart: action.payload
       }
     }
     case 'ERROR': {

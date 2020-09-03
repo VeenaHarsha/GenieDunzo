@@ -1,9 +1,11 @@
 const router = require('express').Router()
-const { addCart, updateCart, getCartList, deleteCart } = require('./model')
+const authorize = require('../middleware/auth')
+const { addCart, updateCart, getCartList, deleteCart, deleteAllCart } = require('./model')
 
-router.get('/getCartList/:storeId', getCartList)
-router.post('/addCart', addCart)
+router.get('/getCartList', authorize, getCartList)
+router.post('/addCart', authorize, addCart)
 router.put('/updateCart/:id', updateCart)
 router.delete('/deleteCart', deleteCart)
+router.delete('/deleteAllCart/:storeId', deleteAllCart)
 
 module.exports = router
