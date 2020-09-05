@@ -1,6 +1,5 @@
 const pool = require('../util/database')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const registerUser = async (req, res) => {
@@ -18,7 +17,7 @@ const registerUser = async (req, res) => {
       `INSERT INTO tblusers (username, email, password, deliverypartner)
        VALUES ('${username}', '${email}', '${hashPwd}', false) RETURNING *`
     )
-  
+
     return res.status(201).json(user)
   } catch (err) {
     return res.status(400).json({ message: err.message })

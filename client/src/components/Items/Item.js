@@ -64,8 +64,16 @@ function Item ({ item,  handleUpdateItem, handleAddItem, removeFromCart }) {
   return (
   <>
     <div key={item.id} className='item-div'>
-      <span className='item-name'>{item.itemname}</span>
-      <span className='item-price'>{item.price}</span>
+      <div className='item-list-div'>
+        <div className='item-img-div'>
+          <img  width='100px' height='100px' className='store-image' src='/images/store-img.jpg' alt='Item' />
+        </div>
+        <div className='item-name-price-qty-div'>
+          <span className='item-name'>{item.itemname}</span>
+          <span className='item-price'>₹{item.price}</span>
+          <span className='item-price'>1 kg</span>
+      </div>
+       
       <div className='price-div'>
         {!showIncrDecr && <button name='incr' className='incr-decr' onClick={(e) => onAddItem(e, item, 1)}>+ ADD</button>}
         {showIncrDecr &&
@@ -74,6 +82,7 @@ function Item ({ item,  handleUpdateItem, handleAddItem, removeFromCart }) {
             <span className='qty-value'>{quantity}</span>
             <button className='incr-decr' name='decr' onClick={(e) => onItemUpdate(e, item)}>-</button>
           </>}
+      </div>
       </div>
     </div>
     
