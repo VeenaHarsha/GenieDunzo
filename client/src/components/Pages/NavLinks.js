@@ -1,14 +1,11 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/auth/AuthContext'
-// import { AppContext } from '../context/app/AppContext'
 
 function NavLinks () {
   const { isAuthenticated, user, logout } = useContext(AuthContext)
-//   const { resetState } = useContext(AppContext)
 
   const signOff = () => {
-    // resetState()
     logout()
   }
   return (

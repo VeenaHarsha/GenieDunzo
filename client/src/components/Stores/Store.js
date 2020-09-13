@@ -1,17 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../../context/app/AppContext'
+import { AuthContext } from '../../context/auth/AuthContext'
 import { Link } from 'react-router-dom'
 
-export default ({ store }) => {
-  const { handleStoreClick } = useContext(AppContext)
+export default ({ store, selectedCat }) => {
+  const { handleStoreClick, storeAddress } = useContext(AppContext)
+  const { isAuthenticated, loadUser, user } = useContext(AuthContext)
 
+  // useEffect(() => {
+  //   loadUser()
+  //   console.log('Am From STORES 2:', isAuthenticated, user)
+  // }, [])
+
+  // onClick={() => handleStoreClick({ selStoreId: store.id, selStoreName: store.storename, storeAddress: store.address })}
+  
   return (
     <div
       key={store.id}
       className='store-divs-list'
-      onClick={() => handleStoreClick({ selStoreId: store.id, selStoreName: store.storename, storeAddress: store.address })}
     >
-    <Link to={`/orders/items/${store.storename}/${store.id}`} style={{textDecoration: 'none'}}>
+    <Link to={`/orders/items/${selectedCat}/${store.storename}/${store.id}`} style={{textDecoration: 'none'}}>
       <div className='store-item-div'>
         <div>
           <img  width='80px' height='80px' className='store-image' src='/images/store-img.jpg' alt='Store' />

@@ -4,7 +4,6 @@ const getCartList = async (req, res) => {
   const { storeid, userid } = req.query
   try {
     const result = await pool.query(`SELECT * FROM cart WHERE  storeId = ${storeid} and userid= ${userid} ORDER BY ID `)
-    console.log('USER CART:', result.rowCount, result.rows)
     res.status(200).json(result.rows)
   } catch (err) {
     return res.status(500).json({ message: 'Error..' })
@@ -18,7 +17,6 @@ const addCart = async (req, res) => {
     const query = `INSERT INTO Cart (userid,storeid,itemid,itemname,quantity,price,itemtotal) 
                      VALUES (${userid},${storeid},${itemid},'${itemname}',${quantity},${price}, ${itemTotal}) RETURNING *`
     const result = await pool.query(query)
-    console.log('Cart Entry2:', result)
     res.status(201).json(result.rows)
   } catch (err) {
     return res.status(500).json({ message: 'Error..' })
@@ -30,7 +28,6 @@ const updateCart = async (req, res) => {
   try {
     const query = `UPDATE Cart SET quantity = ${quantity}, itemtotal = ${itemTotal} WHERE id = ${req.params.id}  RETURNING *`
     const result = await pool.query(query)
-    console.log('Update Cart result:', result)
     res.status(200).json(result.rows)
   } catch (err) {
     return res.status(500).json({ message: 'Error..' })

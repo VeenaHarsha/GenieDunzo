@@ -4,7 +4,8 @@ export default (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload
+        user: action.payload, 
+        loading: false
       }
 
     case 'REGISTER':
@@ -20,6 +21,7 @@ export default (state, action) => {
       return {
         ...state,
         ...action.payload,
+        loading: false,
         isAuthenticated: true
       }
     case 'ERROR':
@@ -30,6 +32,7 @@ export default (state, action) => {
         token: null,
         isAuthenticated: false,
         user: null,
+        loading: false,
         error: action.payload
       }
     default:

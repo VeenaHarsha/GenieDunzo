@@ -2,16 +2,19 @@ import React, { useEffect, useState, useContext } from 'react'
 import Category from '../Category/index'
 import { AppContext } from '../../context/app/AppContext'
 import { AuthContext } from '../../context/auth/AuthContext'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import DPHome from './DPHome'
 
 function Home () {
   const [showCategory, setShowCategory] = useState(true)
-  const [showStores, setShowStores] = useState(false)
+  const [setShowStores] = useState(false)
   const { categoryList, getAllCategories } = useContext(AppContext)
-  const { user, isAuthenticated } = useContext(AuthContext)
+  const { user, isAuthenticated , loadUser} = useContext(AuthContext)
 
   useEffect(() => {
+    // loadUser()
+    console.log('AM HERE in HOME:2',user, isAuthenticated)
+    // console.log('Am From HOME:', isAuthenticated, user)
     getAllCategories()
   }, [])
 
@@ -25,12 +28,12 @@ function Home () {
 
   return (
     <>
-    {!isAuthenticated 
-      ? (<Redirect to='/' />)
-      : (
+      {!isAuthenticated
+        ? (<Redirect to='/' />)
+        : (
           <div className='home-container'>
-          {!user.deliverypartner ? (
-             <div className='main-div'>
+            {!user.deliverypartner ? (
+              <div className='main-div'>
                 {showCategory && categoryList.map((category, index) => (
                   <Category
                     key={category.id}
@@ -40,15 +43,10 @@ function Home () {
                     toggleShowStores={toggleShowStores}
                   />
                 ))}
-                {/* <Link to='/map'>
-                    <div className='checkout-box'>
-                      <input type='button' value='GO To MAP' className='proceed-box'/>
-                    </div>
-                </Link> */}
               </div>
-              ) : (
-                  <DPHome />
-              )}
+            ) : (
+              <DPHome />
+            )}
           </div>
         )}
     </>

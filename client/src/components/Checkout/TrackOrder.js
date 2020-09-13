@@ -4,15 +4,16 @@ import io from 'socket.io-client'
 import DunzoMap from '../Map/UserMap'
 
 export default ({ deliveryAddress, orderRecieved }) => {
-  const { storeAddress, addToDeliveries } = useContext(AppContext)
+  const { storeAddress } = useContext(AppContext)
 
   const [orderAccepted, setOrderAccepted] = useState(false)
+  const [partnerAssigned, setPartnerAssigned] = useState(false)
   const [partnerArrived, setPartnerArrived] = useState(false)
   const [orderPicked, setOrderPicked] = useState(false)
   const [orderDelivered, setOrderDelivered] = useState(false)
   const [showMap, setShowMap] = useState(false)
 
-  const socket = io('http://192.168.0.104:2809')
+  const socket = io('http://localhost:2809')
 
   socket.on('outlet-accepted-order', data => {
     console.log('ORDER ACCEPTED:', data)
@@ -23,22 +24,30 @@ export default ({ deliveryAddress, orderRecieved }) => {
     console.log(`${name} is Connected`)
   })
 
-  socket.on('waiting-for-dp', data => {
-    setTimeout(setPartnerArrived(data), 2000)
+  socket.on('dp-assigned', data => {
+    setPartnerAssigned(data)
+  })
+
+  socket.on('dp-arrived-store', data => {
+    setPartnerArrived(data)
   })
 
   socket.on('order-picked-up', data => {
-    setOrderPicked(true)
+    setOrderPicked(data)
     setShowMap(true)
   })
+
   socket.on('delivered', data => {
     setOrderDelivered(data)
   })
+
   return (
     <div className='track-container'>
       <div className='show-map show-map-info'>
-        {orderDelivered && <div className='pay-container'><p className='update-title'>Thank you for using Dunzo!!</p></div>}
-        {showMap && !orderDelivered &&
+        {orderDelivered && <div className='pay-container'>
+          <p className='update-title' style={{textAlign:'center', fontSize:'20px'}}>Thank you for using Dunzo!!</p>
+          </div>}
+        {showMap && !orderDelivered && orderPicked &&
           <>
             <DunzoMap store={storeAddress} home={deliveryAddress} />
           </>}
@@ -47,17 +56,20 @@ export default ({ deliveryAddress, orderRecieved }) => {
         <div className='updates-div'>
           {orderRecieved && <p className='update-title'>Order Recieved</p>}
         </div>
-        <div className='updates-div'>
-          {orderAccepted && <p className='update-title'>Outlet has accepted your Order</p>}
+        <div>
+          {orderAccepted && <p className='updates-div update-title'>Dunzo processing your Order</p>}
         </div>
-        <div className='updates-div'>
-          {partnerArrived && <p className='update-title'>Partner is on the way to outlet</p>}
+        <div>
+          {partnerAssigned && <p className='updates-div update-title'>Delivery Partner assigned</p>}
         </div>
-        <div className='updates-div'>
-          {orderPicked && <p className='update-title'>Order Pickedup</p>}
+        <div>
+          {partnerArrived && <p className='updates-div update-title'>Delivery Partner arrived</p>}
         </div>
-        <div className='updates-div'>
-          {orderDelivered && <p className='update-title'>Delivered</p>}
+        <div>
+          {orderPicked && <p className='updates-div update-title'>Order Pickedup</p>}
+        </div>
+        <div>
+          {orderDelivered && <p className='updates-div update-title'>Delivered</p>}
         </div>
       </div>
     </div>

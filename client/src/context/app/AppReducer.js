@@ -7,12 +7,6 @@ export default (state, action) => {
         isAccepted: action.payload
       }
     }
-    case 'GET_DELIVERY_LIST': {
-      return {
-        ...state,
-        deliveryDetails: action.payload[0]
-      }
-    }
     case 'GET_CAT_LIST': {
       return {
         ...state,
@@ -21,6 +15,8 @@ export default (state, action) => {
     }
 
     case 'HANDLE_CAT_CLICK': {
+       window.localStorage.setItem('selCategoryId', action.payload.selCatId)
+       window.localStorage.setItem('selCategoryName', action.payload.selCatName)
       return {
         ...state,
         selCatId: action.payload.selCatId,
@@ -38,8 +34,7 @@ export default (state, action) => {
       return {
         ...state,
         selStoreId: action.payload.selStoreId,
-        selStoreName: action.payload.selStoreName,
-        storeAddress: action.payload.storeAddress
+        selStoreName: action.payload.selStoreName
       }
     }
     case 'GET_ITEMS_LIST': {
@@ -61,6 +56,7 @@ export default (state, action) => {
       }
     }
     case 'ADD_Cart': {
+      console.log('ADD_CART', action.payload)
       return {
         ...state,
         cart: [...state.cart, ...action.payload]
@@ -85,7 +81,7 @@ export default (state, action) => {
     case 'DELETE_ALL_CART': {
       return {
         ...state,
-        cart: [...state.cart, ...action.payload]
+        cart: []
       }
     }
     case 'GET_CART_LIST': {

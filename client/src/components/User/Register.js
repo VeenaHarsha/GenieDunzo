@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom'
 function Register () {
   const { error, register, userRegistered } = useContext(AuthContext)
   const [isReg, setIsReg] = useState(false)
+
   const [user, setUser] = useState({
     username: '',
     email: '',
@@ -23,7 +24,9 @@ function Register () {
       email,
       password
     })
+
     setIsReg(true)
+
     setUser({
       username: '',
       email: '',
@@ -37,6 +40,7 @@ function Register () {
     : (<div className='register-container'>
       <form className='user-reg-form' onSubmit={registerDunzo}>
         {error && <h3 className='login-error'>{error.message}</h3>}
+
         <div className='form-group'>
           <label htmlFor='name'>Name</label>
           <input
@@ -47,6 +51,7 @@ function Register () {
             required
           />
         </div>
+
         <div className='form-group'>
           <label htmlFor='email'>Email Address</label>
           <input
@@ -57,6 +62,7 @@ function Register () {
             required
           />
         </div>
+
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
@@ -68,6 +74,7 @@ function Register () {
             minLength='6'
           />
         </div>
+
         <div className='form-group'>
           <label htmlFor='password2'>Confirm Password</label>
           <input
@@ -79,12 +86,14 @@ function Register () {
             minLength='6'
           />
         </div>
+
         <button
           type='submit'
           className='login-button'
         >
             Register
         </button>
+        
       </form>
       <p className='footer-text'>
           Already Registered. <Link to='/'>Login with Account Details</Link>

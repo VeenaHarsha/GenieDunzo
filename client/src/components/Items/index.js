@@ -5,47 +5,57 @@ import { Redirect, Link } from 'react-router-dom'
 import Item from './Item'
 import Cart from '../Cart'
 
-function Items ({ match }) {
+function Items (props) {
   const {
-    getStoreCategories, deleteAllCartItems, getItems, selStoreId, selCatId,
-    selStoreName, storeAddress, storeCats, itemsList, getItemsOfSelCategory,
+    storeList, getStoreCategories, deleteAllCartItems, getItems, 
+    storeCats, itemsList, getItemsOfSelCategory,
     cart, addCart, updateCart, deleteCartItem
   } = useContext(AppContext)
   const { user, isAuthenticated } = useContext(AuthContext)
-  const [activeLink, setActiveLink] = useState(selCatId)
+  const {selectedCat,storeId, storeName} = props.match.params
+  const [activeLink, setActiveLink] = useState(selectedCat)
+  const [storeAddress, setStoreAddress] = useState('')
+
   const cartTotalAmt = cart.map(item => +item.itemtotal).reduce((a, b) => a + b, 0)
 
   const changeCategory = (e, cat) => {
     e.preventDefault()
-    getItemsOfSelCategory(cat.id)
+    getItemsOfSelCategory(storeId,cat.id)
     setActiveLink(cat.id)
   }
 
   const removeFromCart = (item) => {
-    deleteCartItem(item)
+    deleteCartItem(storeId,item)
   }
 
   const onAddItem = (item, quantity) => {
-    addCart(item, quantity, selStoreId, user)
+    addCart(item, quantity, storeId, user)
   }
 
   const updateItemInCart = (item, quantity) => {
-    console.log(3)
     cart.map(cItem => (
-      (cItem.itemid === item.id) ? updateCart(item, quantity, selStoreId, cItem) : ''
+      (cItem.itemid === item.id) ? updateCart(item, quantity, storeId, cItem) : ''
     ))
   }
 
-  useEffect(() => {
-    getItems(selCatId)
-    getStoreCategories(match.params.store)
-  }, [match.params.store])
-
-  const addToOrders = () => {
-    deleteAllCartItems()
-    console.log('Need To delete Cart!!')
+  const getStoreAddress = (storeId) => {
+    storeList.filter(ele => {
+      if(ele.id === +storeId) setStoreAddress(ele.address)
+    });
   }
 
+  useEffect(() => {
+    getStoreAddress(storeId)
+    getItems(storeId, selectedCat)
+    // getItems(selectedCat)
+    getStoreCategories(storeId)
+  }, [storeId])
+
+  const addToOrders = () => {
+    deleteAllCartItems(storeId)
+    console.log('Need To delete Cart!!')
+  }
+   
   return (
     <>
       {!isAuthenticated
@@ -54,7 +64,7 @@ function Items ({ match }) {
           <div className='items-container'>
             <div className='store-details'>
               <p className='store-name-address'>
-                {selStoreName} <sub>{storeAddress}</sub>
+                {storeName} <sub>{storeAddress}</sub>
               </p>
             </div>
             <div className='items-list-div'>
@@ -68,7 +78,7 @@ function Items ({ match }) {
                   {storeCats.map(cat => (
                     <div
                       key={cat.id}
-                      className={`side-category-div ${cat.id === activeLink ? ' active' : ''} `}
+                      className={`side-category-div ${cat.id === +activeLink ? ' active' : ''} `}
                       onClick={(e) => changeCategory(e, cat)}
                     >
                       {cat.name}
@@ -81,7 +91,7 @@ function Items ({ match }) {
                     <Item
                       key={item.id}
                       item={item}
-                      // qty={cart.filter(cItem => cItem.itemid === item.id)}
+                      selStoreId={storeId}
                       handleUpdateItem={updateItemInCart}
                       handleAddItem={onAddItem}
                       removeFromCart={removeFromCart}
@@ -90,24 +100,25 @@ function Items ({ match }) {
                 </div>
                 <div className='cart-div'>
                   <div className='store-header-text'>
-                    <p>Your Cart ( {cart.length} )</p>
+                  <p>Your Cart ( {cart.length} ){storeId}</p>
                   </div>
-                  <Cart />
+                  <Cart selStoreId={storeId}/>
                   <div className='proceed'>
                     {cart.length ? <>
-                    <span className='cart-total'>Item Total: Rs. {cartTotalAmt}</span>
-                    <Link to='/checkout'>
-                      {cartTotalAmt > 0 &&
-                        <div className='checkout-box'>
-                          <input type='button' value='Proceed To Checkout' className='proceed-box' onClick={addToOrders} />
-                        </div>}
-                    </Link>
-                  </> : <span style={{ fontSize: '13px' }}>Cart is Empty!!</span>}
+                      <span className='cart-total'>Item Total: ₹ {cartTotalAmt}</span>
+                      <Link to='/checkout'>
+                        {cartTotalAmt > 0 &&
+                          <div className='checkout-box'>
+                            <input type='button' value='Proceed To Checkout' className='proceed-box' onClick={addToOrders} />
+                          </div>}
+                      </Link>
+                    </> : <span className='store-header-text'>Cart is Empty!!</span>}
                   </div>
                 </div>
               </div>
             </div>
-          </div>)}
+          </div>
+          )} 
     </>
   )
 }

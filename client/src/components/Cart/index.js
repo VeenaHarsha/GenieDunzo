@@ -2,20 +2,19 @@ import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../../context/app/AppContext'
 import { AuthContext } from '../../context/auth/AuthContext'
 
-export default () => {
-  const { cart, getCartList, selStoreId } = useContext(AppContext)
-  const { user } = useContext(AuthContext)
+export default ({selStoreId}) => {
+  const { cart, getCartList } = useContext(AppContext)
+  const { user, isAuthenticated } = useContext(AuthContext)
 
   useEffect(() => {
-    getCartList(selStoreId, user.id)
+   getCartList(selStoreId, user.id)
   }, [])
 
   return (
     <div className='cart-container'>
-      {cart.length && cart.map((cartItem, index) => (
-        <CartItems key={index} cartItem={cartItem}/>
-      ))}
-     
+      {cart.length ? cart.map((cartItem, index) => (
+        <CartItems key={index} cartItem={cartItem} />
+      )) : ''}
     </div>
   )
 }

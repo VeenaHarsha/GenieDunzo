@@ -10,9 +10,7 @@ function Login () {
     email: '',
     password: ''
   })
-  useEffect(() => {
-    token && setIsLogin(true)
-  }, [])
+
   const { email, password } = user
 
   const onChange = e => setUser({ ...user, [e.target.name]: e.target.value })
@@ -30,6 +28,10 @@ function Login () {
     })
   }
 
+  useEffect(() => {
+    token && setIsLogin(true)
+  }, [])
+  
   return (isLogin && isAuthenticated) ? (
     <Redirect to='/home' />
   )

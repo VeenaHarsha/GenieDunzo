@@ -4,7 +4,7 @@ import 'leaflet-routing-machine'
 import io from 'socket.io-client'
 
 export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
-  const socket = io('http://192.168.0.104:2809')
+  const socket = io('http://localhost:2809')
 
   const homeIcon = L.icon({
     iconSize: [25, 41],
@@ -24,34 +24,34 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
     popupAnchor: [2, -40],
     iconUrl: '/images/curr-loc.png'
   })
+
   const [wPoints, setWPoints] = useState([])
   let latlngObj
+  let marker = null;
+
+  useEffect(() => {
+    myMap()
+  }, [])
 
   const plotOnUserMap = async (newMap) => {
     await socket.on('send-geocode-addr', data => {
-      console.log('1.Veena Data is:', data, L.latLng(data))
       latlngObj = L.latLng(data)
       L.marker([latlngObj.lat, latlngObj.lng], { icon: storeIcon })
         .addTo(newMap)
       setWPoints(wPoints.push([latlngObj.lat, latlngObj.lng]))
-    })
-    getRoute(newMap)
-    socket.on('locate-new-dp-pos', data => {
-      L.marker([data.lat, data.lng], { icon: bykeIcon })
+
+      L.Routing.control({
+      waypoints: wPoints,
+      routeWhileDragging: true,
+      show: false
+    }).addTo(newMap)
+  })
+    await socket.on('locate-new-dp-pos', data => {
+      if (marker !== null) newMap.removeLayer(marker)
+      marker = L.marker([data.lat, data.lng], { icon: bykeIcon })
         .addTo(newMap)
     })
   }
-
-  const getRoute = (newMap) => {
-    console.log('FROM ROUTE:', wPoints)
-    L.Routing.control({
-      waypoints: wPoints,
-      routeWhileDragging: true
-    }).addTo(newMap)
-  }
-  useEffect(() => {
-    myMap()
-  }, [])
 
   const myMap = () => {
     const newMap = L.map('map').setView([13.03, 77.59], 12)

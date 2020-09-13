@@ -5,6 +5,7 @@ const initialState = {
   token: window.localStorage.getItem('token'),
   userRegistered: false,
   isAuthenticated: null,
+  loading: true,
   user: null,
   error: null
 }
@@ -24,7 +25,11 @@ export const AuthContextProvider = (props) => {
     try {
       const response = await window.fetch('/dunzo/auth/user', options)
       const data = await response.json()
-      console.log('Load User Response:', data)
+      // if(data.msg) {
+      // console.log('LOAD USER DATA:', data)
+      //   dispatch({ type: 'LOGOUT' })
+      //   return
+      // }
       dispatch({
         type: 'LOAD_USER',
         payload: data
@@ -42,7 +47,6 @@ export const AuthContextProvider = (props) => {
       },
       body: JSON.stringify(formData)
     }
-    console.log('FORM DATA:', formData)
     try {
       const response = await window.fetch('/dunzo/users/register/', options)
       const data = await response.json()
@@ -72,10 +76,9 @@ export const AuthContextProvider = (props) => {
     try {
       const response = await window.fetch('/dunzo/auth/', options)
       const data = await response.json()
-      console.log('Logged In:', data)
       if (data.token) {
         dispatch({ type: 'LOGIN', payload: data })
-        loadUser()
+        // loadUser()
       } else {
         dispatch({
           type: 'ERROR',
@@ -97,6 +100,7 @@ export const AuthContextProvider = (props) => {
       isAuthenticated: state.isAuthenticated,
       user: state.user,
       error: state.error,
+      loading: state.loading,
       login: login,
       logout: logout,
       register: register,

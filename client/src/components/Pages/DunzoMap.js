@@ -50,22 +50,7 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
           .bindPopup(message)
         console.log('RES_LAT_LNG:', result)
         setWPoints(wPoints.push([result.lat, result.lng]))
-        getRoute(newMap)
       })
-  }
-  const coordinates = []
-  const getRoute = (newMap) => {
-    var control = L.Routing.control({
-      waypoints: wPoints,
-      routeWhileDragging: true
-    }).addTo(newMap)
-
-    control.on('routeselected', function (e) {
-      var route = e.route
-      wPoints.push(route.coordinates)
-    // Do something with the route here
-    // console.log('COORDINATES:', route.coordinates);
-    })
   }
 
   const watchPosition = (newMap) => {
@@ -123,11 +108,8 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
     getLatLngFromAddr(home, newMap, homeIcon, 'Delivery Location:')
 
     getLatLngFromAddr(store, newMap, bykeIcon, 'Store Location:')
-    // getRoute(newMap)
-    // console.log('WPOINTS:', wPoints, [...wPoints])
 
-    setInterval(() => { console.log('Veena') }, 1000)
-    // watchPosition(newMap)
+    watchPosition(newMap)
   }
 
   return (

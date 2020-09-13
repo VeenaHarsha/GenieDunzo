@@ -10,16 +10,14 @@ import TrackOrder from './TrackOrder'
 import io from 'socket.io-client'
 
 export default () => {
-  const { storeAddress, addToDeliveries } = useContext(AppContext)
+  const { storeAddress } = useContext(AppContext)
   const { isAuthenticated } = useContext(AuthContext)
   const [deliveryAddress, setDeliveryAddress] = useState('')
-  const [isAccepted, setIsAccepted] = useState(false)
-  const [isDelivered, setIsDelivered] = useState(false)
   const [isPaid, setIsPaid] = useState(false)
   const [orderRecieved, setOrderRecieved] = useState(false)
   const [showDelAddr, setShowDelAddr] = useState(false)
 
-  const socket = io('http://192.168.0.104:2809')
+  const socket = io('http://localhost:2809')
 
   const submitAddress = (e) => {
     e.preventDefault()

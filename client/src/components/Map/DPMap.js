@@ -5,12 +5,10 @@ import * as ESRI from 'esri-leaflet-geocoder'
 import io from 'socket.io-client'
 
 export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
-
-  const socket = io('http://192.168.0.104:2809')
+  const socket = io('http://localhost:2809')
   const [wPoints, setWPoints] = useState([])
   const dpCoords = []
-  let theMarker = {}
-
+  let marker = null
   const homeIcon = L.icon({
     iconSize: [25, 41],
     iconAnchor: [10, 41],
@@ -40,9 +38,7 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
           return
         }
         result = results.results[0].latlng
-        console.log('VINAA:', result, [result.lat, result.lng])
         socket.emit('send-address', result)
-
         L.marker([result.lat, result.lng], { icon: icon })
           .addTo(newMap)
           .bindPopup(message)
@@ -52,51 +48,53 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
   }
 
   const getRoute = (newMap) => {
-    console.log('Route WPoints:', wPoints)
     const control = L.Routing.control({
       waypoints: wPoints,
-      routeWhileDragging: true
+      routeWhileDragging: true,
+      show: false
     }).addTo(newMap)
 
     control.on('routeselected', function (e) {
       const route = e.route
-      for (let i = 0; i < dpCoords.length; i++) {
+      for (let i = 0; i < route.coordinates.length; i++) {
         dpCoords.push(route.coordinates[i])
       }
-    })
-    setInterval(() => {
-      dpCoords.forEach(pos => {
-        locatePosition(newMap, pos)
-        socket.emit('new-dp-position', pos)
-      }, 5000)
-      theMarker = (theMarker !== undefined) && undefined
+      const lastPos = dpCoords[dpCoords.length - 1]
+
+      const interval = setInterval(() => {
+        dpCoords.forEach(pos => {
+          if (pos === lastPos) {
+            console.log('AM I SAME:', pos, lastPos)
+            clearInterval(interval)
+            return
+          }
+          locatePosition(newMap, pos)
+          socket.emit('new-dp-position', pos)
+        })
+      }, 1000)
     })
   }
 
   const locatePosition = (newMap, pos) => {
-    theMarker = L.marker([pos.lat, pos.lng], { icon: bykeIcon })
-      .addTo(newMap)
+    if (marker !== null) newMap.removeLayer(marker)
+    marker = L.marker(pos, { icon: bykeIcon }).addTo(newMap)
   }
 
-  useEffect(() => {
-    myMap()
-  }, [])
-
-  const myMap = () => {
+  const myMap = async () => {
     const newMap = L.map('map').setView([13.03, 77.59], 20)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(newMap)
 
-    console.log('VEENA:', home, store)
-
-    plotOnTheMap(store, newMap, storeIcon, 'Store Location:')
-
-    plotOnTheMap(home, newMap, homeIcon, 'Delivery Location:')
-
-    // plotOnTheMap(store, newMap, bykeIcon, 'DP Location:')
+    await plotOnTheMap(store, newMap, storeIcon, 'Store Location:')
+    await plotOnTheMap(home, newMap, homeIcon, 'Delivery Location:')
   }
+
+  useEffect(() => {
+    myMap()
+  }, [])
+  
   return (
     <div id='map' />
   )
