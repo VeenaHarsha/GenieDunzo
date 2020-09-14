@@ -46,7 +46,6 @@ function Item ({ item, selStoreId, handleUpdateItem, handleAddItem, removeFromCa
   }
 
   useEffect(() => {
-    console.log('QTY:', q, quantity)
     q = cart.filter(cItem => cItem.itemid === item.id && cItem.userid === user.id)
     setShowIncrDecr((quantity > 0))
   }, [])

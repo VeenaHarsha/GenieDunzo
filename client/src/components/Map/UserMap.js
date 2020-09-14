@@ -3,7 +3,7 @@ import L from 'leaflet'
 import 'leaflet-routing-machine'
 import io from 'socket.io-client'
 
-export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
+export default function Maps () {
   const socket = io('http://localhost:2809')
 
   const homeIcon = L.icon({
@@ -35,6 +35,7 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
 
   const plotOnUserMap = async (newMap) => {
     await socket.on('send-geocode-addr', data => {
+      console.log('AM Result2:', data)
       latlngObj = L.latLng(data)
       L.marker([latlngObj.lat, latlngObj.lng], { icon: storeIcon })
         .addTo(newMap)

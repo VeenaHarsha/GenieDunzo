@@ -6,17 +6,14 @@ const initialState = {
   storeList: [],
   itemsList: [],
   storeCats: [],
-  cart: []
+  cart: [],
+  storeAddress: ''
 }
 
 export const AppContext = createContext()
 
 export const AppContextProvider = (props) => {
   const [state, dispatch] = useReducer(AppReducer, initialState)
-
-  const acceptDelivery = (flag) => {
-    dispatch({ type: 'IS_ACCEPTED', payload: flag })
-  }
 
   const getAllCategories = async () => {
     try {
@@ -27,36 +24,25 @@ export const AppContextProvider = (props) => {
       dispatch({ type: 'ERROR', payload: err })
     }
   }
-
-  const handleCategory = (data) => {
-    dispatch({ type: 'HANDLE_CAT_CLICK', payload: data })
+  const handleStoreAddress = (data) => {
+    dispatch({ type: 'HANDLE_STORE_ADDR', payload: data })
   }
-
   const getStoresList = async (cat) => {
     const options = {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        'x-auth-token': window.localStorage.getItem('token')
+        'Content-Type': 'application/json;charset=UTF-8'
       }
     }
     try {
       const response = await window.fetch(`/dunzo/stores/getStoresList/${cat}`, options)
       const data = await response.json()
       console.log('STORE LIST:', data)
-      // if(data.msg) {
-      //   console.log('LOAD USER DATA:', data)
-      //     dispatch({ type: 'ERROR' })
-      //     return
-      //   }
+    
       dispatch({ type: 'GET_STORE_LIST', payload: data })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
-  }
-
-  const handleStoreClick = (data) => {
-    dispatch({ type: 'HANDLE_STORE_CLICK', payload: data })
   }
 
   const getAllItems = async (catId) => {
@@ -110,7 +96,6 @@ export const AppContextProvider = (props) => {
       }
       const response = await window.fetch(`/dunzo/cart/getCartList/?storeid=${storeId}&&userid=${userId}`, options)
       const data = await response.json()
-      console.log('GET CART LIST:', data)
       // dispatch({ type: 'GET_CART_LIST', payload: data })
       data.length ? dispatch({ type: 'GET_CART_LIST', payload: data }) : dispatch({ type: 'ERROR', payload: data.message })
     } catch (err) {
@@ -137,7 +122,7 @@ export const AppContextProvider = (props) => {
     try {
       const response = await window.fetch('/dunzo/cart/addCart', options)
       const data = await response.json()
-      dispatch({ type: 'ADD_Cart', payload: data })
+      dispatch({ type: 'ADD_CART', payload: data })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
@@ -157,7 +142,7 @@ export const AppContextProvider = (props) => {
     try {
       const response = await window.fetch(`/dunzo/cart/updateCart/${cart.id}`, options)
       const data = await response.json()
-      dispatch({ type: 'UPDATE_Cart', payload: data })
+      dispatch({ type: 'UPDATE_CART', payload: data })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
@@ -199,9 +184,8 @@ export const AppContextProvider = (props) => {
       itemsList: state.itemsList,
       storeCats: state.storeCats,
       cart: state.cart,
+      storeAddress: state.storeAddress,
       getAllCategories: getAllCategories,
-      handleCategory: handleCategory,
-      handleStoreClick: handleStoreClick,
       getStoresList: getStoresList,
       getAllItems: getAllItems,
       getItems: getItems,
@@ -212,7 +196,7 @@ export const AppContextProvider = (props) => {
       deleteCartItem: deleteCartItem,
       getCartList: getCartList,
       deleteAllCartItems: deleteAllCartItems,
-      acceptDelivery: acceptDelivery
+      handleStoreAddress: handleStoreAddress
     }}
     >
       {props.children}

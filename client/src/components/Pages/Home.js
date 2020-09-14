@@ -5,16 +5,16 @@ import { AuthContext } from '../../context/auth/AuthContext'
 import { Redirect } from 'react-router-dom'
 import DPHome from './DPHome'
 
-function Home () {
+function Home (props) {
   const [showCategory, setShowCategory] = useState(true)
   const [setShowStores] = useState(false)
   const { categoryList, getAllCategories } = useContext(AppContext)
   const { user, isAuthenticated , loadUser} = useContext(AuthContext)
 
   useEffect(() => {
-    // loadUser()
-    console.log('AM HERE in HOME:2',user, isAuthenticated)
-    // console.log('Am From HOME:', isAuthenticated, user)
+    loadUser()
+    // console.log('AM HERE in HOME Veena',user, isAuthenticated, props.match,props.location,props.history)
+    console.log('Am From HOME:', isAuthenticated, user)
     getAllCategories()
   }, [])
 

@@ -1,12 +1,6 @@
 export default (state, action) => {
   switch (action.type) {
     
-    case 'IS_ACCEPTED': {
-      return {
-        ...state,
-        isAccepted: action.payload
-      }
-    }
     case 'GET_CAT_LIST': {
       return {
         ...state,
@@ -30,11 +24,11 @@ export default (state, action) => {
         storeList: action.payload 
       }
     }
-    case 'HANDLE_STORE_CLICK': {
+    case 'HANDLE_STORE_ADDR': {
+      console.log('action.payload.storeAddress', action.payload.storeAddress)
       return {
         ...state,
-        selStoreId: action.payload.selStoreId,
-        selStoreName: action.payload.selStoreName
+        storeAddress: action.payload.storeAddress
       }
     }
     case 'GET_ITEMS_LIST': {
@@ -55,14 +49,14 @@ export default (state, action) => {
         showIncrDecr: true
       }
     }
-    case 'ADD_Cart': {
+    case 'ADD_CART': {
       console.log('ADD_CART', action.payload)
       return {
         ...state,
         cart: [...state.cart, ...action.payload]
       }
     }
-    case 'UPDATE_Cart': {
+    case 'UPDATE_CART': {
       const newCart = state.cart.map(cartItem => (
         action.payload.length && (cartItem.id === action.payload[0].id) ? { ...cartItem, quantity: action.payload[0].quantity, itemtotal: action.payload[0].itemtotal }
           : cartItem

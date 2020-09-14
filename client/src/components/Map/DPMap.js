@@ -9,6 +9,7 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
   const [wPoints, setWPoints] = useState([])
   const dpCoords = []
   let marker = null
+
   const homeIcon = L.icon({
     iconSize: [25, 41],
     iconAnchor: [10, 41],
@@ -38,6 +39,7 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
           return
         }
         result = results.results[0].latlng
+        console.log('AM Result:', result)
         socket.emit('send-address', result)
         L.marker([result.lat, result.lng], { icon: icon })
           .addTo(newMap)
@@ -81,7 +83,7 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
   }
 
   const myMap = async () => {
-    const newMap = L.map('map').setView([13.03, 77.59], 20)
+    const newMap = L.map('map').setView([13.03, 77.59], 12)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

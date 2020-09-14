@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { AppContext } from '../../context/app/AppContext'
 import io from 'socket.io-client'
-import DunzoMap from '../Map/UserMap'
+import UserMap from '../Map/UserMap'
 
 export default ({ deliveryAddress, orderRecieved }) => {
   const { storeAddress } = useContext(AppContext)
@@ -49,7 +49,7 @@ export default ({ deliveryAddress, orderRecieved }) => {
           </div>}
         {showMap && !orderDelivered && orderPicked &&
           <>
-            <DunzoMap store={storeAddress} home={deliveryAddress} />
+            <UserMap store={storeAddress} home={deliveryAddress} />
           </>}
       </div>
       <div className='show-updates'>

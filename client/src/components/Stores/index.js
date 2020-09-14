@@ -1,26 +1,18 @@
 import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../../context/app/AppContext'
-import { AuthContext } from '../../context/auth/AuthContext'
-import { Redirect } from 'react-router-dom'
-import Store from './Store'
+import { Link } from 'react-router-dom'
 
 export default (props) => {
   const images = ['/images/grocery.png', '/images/fruit-veg.png', '/images/beverage.png', '/images/medicine.png', '/images/pkg.png']
-  const { storeList, getStoresList } = useContext(AppContext)
-  const { isAuthenticated, loadUser, user, token } = useContext(AuthContext)
+  const { storeList, getStoresList, handleStoreAddress } = useContext(AppContext)
   const { categoryName, categoryId } = props.match.params
 
   useEffect(() => {
     // loadUser()
     getStoresList(categoryId)
-    console.log('Am From STORES index:',isAuthenticated, user, categoryId)
   }, [])
 
   return (
-    <>
-    {!isAuthenticated 
-      ? (<Redirect to='/' />)
-      : (
     <div className='store-container'>
       <div className='store-info-div'>
         <div className='category-div'>
@@ -29,12 +21,25 @@ export default (props) => {
         </div>
         <div className='store-list'>
           {storeList.map(store => (
-            <Store key={store.id} store={store} selectedCat={categoryId}/>
+            // <Store key={store.id} store={store} selectedCat={categoryId}/>
+            <div key={store.id} className='store-divs-list'
+                onClick={() => handleStoreAddress({ storeAddress: store.address })}
+              >
+                <Link to={`/orders/items/${categoryId}/${store.address}/${store.storename}/${store.id}`} style={{textDecoration: 'none'}}>
+                  <div className='store-item-div'>
+                    <div>
+                      <img  width='80px' height='80px' className='store-image' src='/images/store-img.jpg' alt='Store' />
+                    </div>
+                    <div className='store-name'>
+                      <p>{store.storename}</p>
+                      <p>{store.address}</p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
           ))}
         </div>
       </div>
     </div>
-    )}
-    </>
   )
 }
