@@ -8,7 +8,6 @@ function Item ({ item,cart, selStoreId, handleUpdateItem, handleAddItem, handleR
 
   const initialQuantity = () => {
     const qty = cart.filter(cItem => cItem.itemid === item.id && cItem.userid === user.id )
-    // let q = 0 || (qty.length ? qty[0].quantity : 0)
     return (qty.length ? qty[0].quantity : 0)
   }
   const [showIncrDecr, setShowIncrDecr] = useState(false)
@@ -46,15 +45,17 @@ function Item ({ item,cart, selStoreId, handleUpdateItem, handleAddItem, handleR
       incrementValue()
       setShowIncrDecr(true)
     }
-    //  handleUpdateItem(item, quantity)
-  }
-  const getQtyInfo = async () => {
-    await getCartList(selStoreId, user.id)
-    await setQuantity(initialQuantity)
   }
 
   useEffect(() => {
-    getQtyInfo()
+    const qty = cart.filter(cItem => cItem.itemid === item.id && cItem.userid === user.id)
+    let q = 0 || (qty.length ? qty[0].quantity : 0)
+    setQuantity(q)
+    setShowIncrDecr((quantity > 0))
+  }, [])
+
+  useEffect(() => {
+    getCartList(selStoreId, user.id)
     if (quantity > 0) {
       handleUpdateItem(item, quantity)
       setShowIncrDecr((quantity > 0))

@@ -22,6 +22,7 @@ const addCart = async (req, res) => {
     return res.status(500).json({ message: 'Error..' })
   }
 }
+
 const updateCart = async (req, res) => {
   const { quantity, price } = req.body
   const itemTotal = (price * quantity)

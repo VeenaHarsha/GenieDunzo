@@ -17,11 +17,11 @@ function Home () {
     <section className='home-container'>
       {!user.deliverypartner ? (
         <main className='main-div'>
-          {categoryList.length && categoryList.map((category, index) => (
+          {categoryList.length && categoryList.map((category) => (
             <Category
               key={category.id}
               category={category}
-              index={index}
+              catId={category.id}
             />
           ))}
         </main>

@@ -6,6 +6,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const { token, isAuthenticated } = useContext(AuthContext)
   const history = useHistory()
   const location = useLocation()
+
   useEffect(() => {
     token && history.push(location.pathname)
   }, [])

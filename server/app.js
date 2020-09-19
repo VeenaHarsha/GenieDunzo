@@ -15,6 +15,7 @@ const server = http.createServer(app)
 // const io = require('socket.io')(server)
 
 const io = require('socket.io')(server, {
+  
   handlePreflightRequest: (req, res) => {
       const headers = {
           "Access-Control-Allow-Headers": "Content-Type, Authorization",
@@ -26,8 +27,8 @@ const io = require('socket.io')(server, {
   }})
 
 server.listen(port, () => {
-    console.log('App running on :', port)
-  })
+  console.log('App running on :', port)
+})
 
 io.sockets.on('connection', socket => {
   socket.on('new-dp-user', name => {

@@ -38,10 +38,10 @@ function Login () {
     : (
       <main className='login-container'>
         <form className='user-login-form' onSubmit={loginTrello}>
-          {error && <details className='login-error'>{error.message}</details>}
+          {error && <p className='login-error'>{error.message}</p>}
           <summary className='login-text'> Login Please!</summary>
           <input
-            type='text'
+            type='email'
             className='login-input'
             placeholder='Enter Email'
             name='email'

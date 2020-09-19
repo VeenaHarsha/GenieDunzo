@@ -594,12 +594,12 @@ text-align: center;
   background: #ffffff;
 }
 
-.user-login-form input[type=text]:focus,
+.user-login-form input[type=email]:focus,
 .user-login-form input[type=password]:focus{
     background-color: rgb(194, 192, 192);
     outline: none;
 }
-.user-login-form input[type=text],
+.user-login-form input[type=email],
 .user-login-form input[type=password] {
   width:80%;
   padding: 12px;
