@@ -6,12 +6,6 @@ import io from 'socket.io-client'
 export default function Maps () {
   const socket = io('http://localhost:2809')
 
-  const homeIcon = L.icon({
-    iconSize: [25, 41],
-    iconAnchor: [10, 41],
-    popupAnchor: [2, -40],
-    iconUrl: '/images/vMarker.png'
-  })
   const bykeIcon = L.icon({
     iconSize: [35, 41],
     iconAnchor: [10, 41],
@@ -35,7 +29,6 @@ export default function Maps () {
 
   const plotOnUserMap = async (newMap) => {
     await socket.on('send-geocode-addr', data => {
-      console.log('AM Result2:', data)
       latlngObj = L.latLng(data)
       L.marker([latlngObj.lat, latlngObj.lng], { icon: storeIcon })
         .addTo(newMap)
@@ -47,6 +40,7 @@ export default function Maps () {
       show: false
     }).addTo(newMap)
   })
+
     await socket.on('locate-new-dp-pos', data => {
       if (marker !== null) newMap.removeLayer(marker)
       marker = L.marker([data.lat, data.lng], { icon: bykeIcon })

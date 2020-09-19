@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const authorize = require('../middleware/auth')
+const authorize = require('../middleware/authorize')
 const { addCart, updateCart, getCartList, deleteCart, deleteAllCart } = require('./model')
 
 router.get('/getCartList', authorize, getCartList)

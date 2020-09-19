@@ -25,9 +25,7 @@ export const AuthContextProvider = (props) => {
     try {
       const response = await window.fetch('/dunzo/auth/user', options)
       const data = await response.json()
-      console.log('DATA:', data)
       if(data.msg) {
-      console.log('LOAD USER DATA:', data)
         dispatch({ type: 'LOGOUT' })
         return
       }
@@ -79,7 +77,7 @@ export const AuthContextProvider = (props) => {
       const data = await response.json()
       if (data.token) {
         dispatch({ type: 'LOGIN', payload: data })
-        // loadUser()
+        loadUser()
       } else {
         dispatch({
           type: 'ERROR',

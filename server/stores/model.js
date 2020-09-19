@@ -5,6 +5,11 @@ const getStores = async (req, res) => {
   const result = await pool.query(`SELECT * FROM stores WHERE id in (SELECT storeid FROM storecategories WHERE ${catId} = ANY(catId) ) ORDER BY ID `)
   res.status(200).json(result.rows)
 }
+const getStoreAddress = async (req, res) => {
+  const { storeId } = req.params
+  const result = await pool.query(`SELECT address FROM stores WHERE id = ${storeId}`)
+  res.status(200).json(result.rows)
+}
 
 
 const getStoreCategories = async (req, res) => {
@@ -13,4 +18,4 @@ const getStoreCategories = async (req, res) => {
   res.status(200).json(result.rows)
 }
 
-module.exports = { getStores, getStoreCategories }
+module.exports = { getStores, getStoreAddress, getStoreCategories }

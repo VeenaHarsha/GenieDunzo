@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { loginUser, getUserDetails } = require('./model')
-const authorize = require('../middleware/auth')
+const authorize = require('../middleware/authorize')
 
 router.get('/user', authorize, getUserDetails)
 

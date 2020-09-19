@@ -34,9 +34,9 @@ function Register () {
 
   return (isReg && userRegistered)
     ? (<Redirect to='/' />)
-    : (<div className='register-container'>
+    : (<main className='register-container'>
       <form className='user-reg-form' onSubmit={registerTrello}>
-        {error && <h3 className='login-error'>{error.message}</h3>}
+        {error && <details className='login-error'>{error.message}</details>}
         <div className='form-group'>
           <label htmlFor='name'>Name</label>
           <input
@@ -86,10 +86,10 @@ function Register () {
             Register
         </button>
       </form>
-      <p className='footer-text'>
-          Already Registered. <Link to='/'>Login with Account Details</Link>
-      </p>
-     </div>)
+      <footer className='footer-text'>
+          Already Registered. <Link to='/' className='link-style'>Login with Account Details</Link>
+      </footer>
+     </main>)
 }
 
 export default Register

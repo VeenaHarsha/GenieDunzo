@@ -1,17 +1,16 @@
-import React, { useState, useContext } from 'react'
-import { AppContext } from '../../context/app/AppContext'
+import React, { useState } from 'react'
 import io from 'socket.io-client'
 import UserMap from '../Map/UserMap'
+import { useHistory  } from 'react-router-dom'
 
-export default ({ deliveryAddress, orderRecieved }) => {
-  const { storeAddress } = useContext(AppContext)
-
+export default ({ orderRecieved }) => {
   const [orderAccepted, setOrderAccepted] = useState(false)
   const [partnerAssigned, setPartnerAssigned] = useState(false)
   const [partnerArrived, setPartnerArrived] = useState(false)
   const [orderPicked, setOrderPicked] = useState(false)
   const [orderDelivered, setOrderDelivered] = useState(false)
   const [showMap, setShowMap] = useState(false)
+  const history = useHistory()
 
   const socket = io('http://localhost:2809')
 
@@ -40,38 +39,31 @@ export default ({ deliveryAddress, orderRecieved }) => {
   socket.on('delivered', data => {
     setOrderDelivered(data)
   })
+  
+  const handleBackHome = () => {
+    history.push('/home')
+  }
 
   return (
-    <div className='track-container'>
-      <div className='show-map show-map-info'>
-        {orderDelivered && <div className='pay-container'>
-          <p className='update-title' style={{textAlign:'center', fontSize:'20px'}}>Thank you for using Dunzo!!</p>
-          </div>}
+    <main className='track-container'>
+      <aside className='show-map show-map-info'>
+        {orderDelivered && <article className='checkout-page'>
+          <p className='info-msg'>Thank you for using Dunzo!!</p>
+          <button className='back-button' onClick={handleBackHome}> Back Home </button>
+        </article>}
         {showMap && !orderDelivered && orderPicked &&
           <>
-            <UserMap store={storeAddress} home={deliveryAddress} />
+            <UserMap />
           </>}
-      </div>
-      <div className='show-updates'>
-        <div className='updates-div'>
-          {orderRecieved && <p className='update-title'>Order Recieved</p>}
-        </div>
-        <div>
+      </aside>
+      <aside className='show-updates'>
+          {orderRecieved && <p className='updates-div update-title'>Order Recieved</p>}
           {orderAccepted && <p className='updates-div update-title'>Dunzo processing your Order</p>}
-        </div>
-        <div>
           {partnerAssigned && <p className='updates-div update-title'>Delivery Partner assigned</p>}
-        </div>
-        <div>
           {partnerArrived && <p className='updates-div update-title'>Delivery Partner arrived</p>}
-        </div>
-        <div>
           {orderPicked && <p className='updates-div update-title'>Order Pickedup</p>}
-        </div>
-        <div>
           {orderDelivered && <p className='updates-div update-title'>Delivered</p>}
-        </div>
-      </div>
-    </div>
+      </aside>
+    </main>
   )
 }

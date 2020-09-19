@@ -9,13 +9,21 @@ app.use(cors())
 app.use(express.json())
 app.use('/dunzo', routes)
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
-})
 // sockets
 const http = require('http')
 const server = http.createServer(app)
-const io = require('socket.io')(server)
+// const io = require('socket.io')(server)
+
+const io = require('socket.io')(server, {
+  handlePreflightRequest: (req, res) => {
+      const headers = {
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true
+      }
+      res.writeHead(200, headers)
+      res.end()
+  }})
 
 server.listen(port, () => {
     console.log('App running on :', port)

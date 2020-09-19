@@ -45,13 +45,10 @@ function DPHome () {
   }, [isAccepted])
 
   return (
-    <>
       <div className='login-container'>
         {!isConfirmed || isDelivered
           ? (
-            <>
-              <h3 className='dp-heading'>Delivery Partner Home Page</h3>
-            </>
+            <h3 className='dp-heading'>Delivery Partner Home Page</h3>
           )
           : (<>
             {!isDelivered && !showMap
@@ -65,7 +62,7 @@ function DPHome () {
                   <span className='dp-span-1'>Drop Location: </span>
                   <span className='dp-span-2'> {address ? address.home : ''}</span>
                 </p>
-                <button className='proceed-box' type='submit' onClick={handleAccept}>
+                <button className='login-button' type='submit' onClick={handleAccept}>
             ACCEPT ORDER
                 </button>
               </div>)
@@ -86,7 +83,6 @@ function DPHome () {
           {isPicked && showMap && <DPMap store={address.store} home={address.home} />}
         </div>
       </div>
-    </>
   )
 }
 

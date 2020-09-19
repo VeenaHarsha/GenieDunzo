@@ -4,7 +4,6 @@
   padding: 0;
 }
 
-
 body {
   margin: 0 auto;
   width:90%;
@@ -20,6 +19,14 @@ header {
   background: #f8f8f8;
   border-radius: 5px;
 }
+.info-msg {
+  font-weight: bold;
+  text-align: center;
+  font-size: 25px;
+  padding: 10px;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px; */
+}
+
 .dp-Map{
   width: 100%;
 }
@@ -30,14 +37,14 @@ header {
   margin: 0 auto;
 }
 
-.head-containers {
+.main-head {
   position: -webkit-sticky;
   position: sticky;
   z-index: 1000;
   top: 0px;
 }
 
-.head-container-1 {
+.head-container {
   background-color:rgb(2, 30, 59);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -66,7 +73,11 @@ header {
   font-weight: bolder;
   font-family: monospace;
 }
-
+.link-style{
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
 .links-one{
   padding: 5px;
   margin-right: 5px;
@@ -136,7 +147,8 @@ header {
   padding: 5px;
   border-radius: 3px;
   display: flex;
-  border:1px solid rgb(240, 230, 250);
+  /* border:1px solid rgb(240, 230, 250); */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
 }
 
 .cat-image-1{
@@ -240,7 +252,7 @@ header {
   padding: 5px;
   border-radius: 3px;
   height: 150px;
-  position: sticky;
+  /* position: sticky; */
   top: 10px;
 }
 .store-name-address , sub{
@@ -250,7 +262,7 @@ header {
   color:  seashell;
   font-weight: bold;
 }
-
+*/
 .items-list-div {
   box-sizing: border-box;
   margin-left: 5%;
@@ -263,7 +275,7 @@ header {
 
 .search-item-container {
   background: white;
-  height: 100px;
+  height: 60px;
   border-radius: 5px;
   margin-top: 10px;
   position: relative;
@@ -342,15 +354,16 @@ header {
   background: none;
 }
 .side-categories{
-  width: 30%;
-  overflow-y: scroll;
+  width: 33%;
+  /* overflow-y: scroll; */
+  padding: 10px;
 }
 .side-category-div{
   border-radius: 3px;
   margin-top: 10px;
   border-bottom : 1px solid lightgrey ;
   font-size: 13px;
-  width: 90%;
+  width: 100%;
   padding: 8px;
   margin : 5px;
   cursor: pointer;
@@ -371,19 +384,20 @@ header {
   width: 70%;
   height: 100%;
   overflow-y: hidden;
-  border: 1px solid rgb(236, 232, 232);
+  /* border: 1px solid rgb(236, 232, 232); */
 }
 
 .cart-div{
   width:55%;
   /* height: 100%; */
   text-align: center;
+  padding: 10px;
 }
 .store-header-text{
   background-color: rgb(240, 235, 235);
-  padding: 5px;
+  padding: 10px;
   width:100%;
-  text-align: left;
+  text-align: center;
   font-weight: bold;
   font-size: 14px;
 }
@@ -407,7 +421,7 @@ header {
   width: 100%;
   font-weight: bolder;
 }
-.cart-item-name {
+.cart-item {
   display: flex;
   padding: 5px;
   width: 100%;
@@ -419,19 +433,35 @@ header {
   font-size: 14px;
   background: rgb(235, 233, 233);
 }
+.checkout-section{
+  width: 100%;
+}
 .checkout-page{
-  width:80%;
+  width:100%;
   background: white;
   box-sizing: border-box;
   border-radius: 5px;
   margin-top: 10px;
   display: flex;
   height: 120px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+  text-align: center;
+}
+.back-button{
+  width: 25%;
+  background-color: rgb(189, 245, 133);
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
 }
 .check-box{
   width: 10%;
   text-align: center;
   margin-top: 25px;
+}
+.footer-text{
+  padding: 10px;
 }
 input[type=checkbox] {
   /* transform: scale(2);
@@ -441,22 +471,19 @@ input[type=checkbox] {
   padding: 10px;
 }
 .checkbox-title{
-  margin-top: 10px;
+  margin-top: 30px;
   font-size: 25px;
   font-weight: bold;
   padding: 10px;
 }
 .address-container {
   box-sizing: border-box;
-  width:80%;
+  margin-top: 30px;
+  width:60%;
   padding:10px;
   border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
 }
-.pay-container{
-  width:60%;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
-}
+
 .show-map-info{
   margin-top: 20px;
   width:100%;
@@ -470,15 +497,13 @@ input[type=checkbox] {
 .proceed {
   position: relative;
   top: 100px;
-  margin-left: 10%;
+  /* margin-left: 10%; */
 }
 .proceed-box{
   margin-top: 5px;
   border-radius: 3px;
   font-weight: bold;
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
+  background-color: rgb(189, 245, 133);
   padding: 10px ;
   text-align: center;
   text-decoration: none;
@@ -495,12 +520,11 @@ text-align: center;
  padding: 5px;
  width:80%;
 }
-
 .input-addr-fromto{
   padding: 10px;
   border: none;
   border-radius: 3px;
-  width:80%;
+  width: 100%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
   margin-left: 5px;
 }
@@ -513,6 +537,7 @@ text-align: center;
 }
 .show-updates{
   width: 30%;
+  margin: 10px;
 }
 .updates-div{
   width: 100%;
@@ -589,17 +614,19 @@ text-align: center;
   padding: 3px;
 }
 
-.login-button {
-  background: #4CAF50;
+.login-button,.proceed-box {
+  background-color: rgb(189, 245, 133);
   border-radius: 5px;
   font-weight:bold;
-  padding: 15px 10px;
+  padding: 10px 10px;
   border: none;
   cursor: pointer;
   width: 20%;
-  margin-bottom:10px;
+  /* margin:10px; */
 }
-
+.proceed-box {
+  width: 100%;
+}
 /**MAP**/
 .leaflet-container {
   margin: 2% 0 2% 0;
@@ -634,7 +661,7 @@ text-align: center;
         flex-direction: column;
     }
     .app-name {
-      font-size: 25px;
+      font-size: 20px;
       color: seashell;
       margin-left: 2px;
       margin-left: 60px;
@@ -643,8 +670,9 @@ text-align: center;
     .caption{
       font-size: 10px;
       padding: 2px;
-      margin-top: -10px;
-      margin-left: -300px;
+      margin-top: -5px;
+      position: relative;
+      left: -50px;
       color: seashell;
       font-family: monospace;
     }
@@ -660,7 +688,6 @@ text-align: center;
     
   .links-one{
     padding: 2px;
-    font-weight: 300;
     right: 210px;
     position: fixed;
     top:10px;
@@ -672,7 +699,7 @@ text-align: center;
     right: 250px;
     top: 35px;
     position: fixed;
-    font-weight: 300;
+    font-weight: bold;
     border-radius: 5px;
   color: seashell;
     right: 80px;
@@ -705,20 +732,48 @@ text-align: center;
     box-sizing: border-box;
     margin-left: 5%;
     margin-right: 5%;
-    width: 100%;
+    width: 90%;
     position: sticky;
     top: -5px;
     height: 5px;
   } 
+
+  .items-div-container{
+    box-sizing: border-box;
+     display: flex;
+      flex-direction: column;
+     position: relative;
+     top: -50px;
+     box-shadow: rgba(54, 53, 53, 0.1) 0px 4px 8px;
+   }
+   .item-img-div{
+     width: 33%;
+   }
+   .item-name-price-qty-div{
+    width:40%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+  }
   .side-categories{
-    width: 33%;
+    width: 100%;
     overflow-y: hidden;
   }
   .items-div{
-    width: 33%;
-    height: 100%;
+    width: 100%;
+    /* height: 100%; */
     overflow-y: hidden;
     border: 1px solid rgb(236, 232, 232);
+  }
+  .price-div{
+    height: 10%;
+    margin-top: 50px;
+    border-radius: 5px;
+    text-align: center;
+    float: right;
+    border: 1px solid rgb(236, 232, 232);
+    position: relative;
+    top: -5px;
   }
   .cart-div{
     width:33%;

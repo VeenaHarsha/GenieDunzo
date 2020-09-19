@@ -4,28 +4,29 @@ import { AuthContext } from '../../context/auth/AuthContext'
 
 export default ({selStoreId}) => {
   const { cart, getCartList } = useContext(AppContext)
-  const { user, isAuthenticated } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
 
-  useEffect(() => {
-   getCartList(selStoreId, user.id)
-  }, [])
+  // useEffect(() => {
+  //   console.log('Getting CartList:', selStoreId, user.id)
+  //  getCartList(selStoreId, user.id)
+  // }, [selStoreId, user.id])
 
   return (
-    <div className='cart-container'>
+    <article className='cart-container'>
       {cart.length ? cart.map((cartItem, index) => (
         <CartItems key={index} cartItem={cartItem} />
       )) : ''}
-    </div>
+    </article>
   )
 }
 
 function CartItems ({ cartItem }) {
   return (
-    <div className='cart-items'>
-      <p className='cart-item-name'>{cartItem.itemname}</p>
-      <p className='cart-item-name'>{cartItem.price}</p>
-      <p className='cart-item-name'>{cartItem.quantity}</p>
-      <p className='cart-item-name'>{cartItem.itemtotal}</p>
-    </div>
+    <aside className='cart-items'>
+      <data className='cart-item'>{cartItem.itemname}</data>
+      <data className='cart-item'>{cartItem.price}</data>
+      <data className='cart-item'>{cartItem.quantity}</data>
+      <data className='cart-item'>{cartItem.itemtotal}</data>
+    </aside>
   )
 }

@@ -39,7 +39,6 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
           return
         }
         result = results.results[0].latlng
-        console.log('AM Result:', result)
         socket.emit('send-address', result)
         L.marker([result.lat, result.lng], { icon: icon })
           .addTo(newMap)
@@ -66,7 +65,6 @@ export default function Maps ({ store, home = 'Jakkur, bangalore' }) {
       const interval = setInterval(() => {
         dpCoords.forEach(pos => {
           if (pos === lastPos) {
-            console.log('AM I SAME:', pos, lastPos)
             clearInterval(interval)
             return
           }

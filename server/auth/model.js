@@ -15,6 +15,7 @@ const getUserDetails = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body
+  console.log('UN & PWD:',req.body)
   try {
     const user = await pool.query(`SELECT id, username, password, deliverypartner FROM tblusers WHERE email = '${email}'`)
     console.log('LOGGED IN USER IS:', user)
@@ -25,6 +26,7 @@ const loginUser = async (req, res) => {
 
     if (!pwd) return res.status(400).json({ message: 'Invalid Credentials' })
     const token = jwt.sign({ user: user.rows[0].id },''+ process.env.SECRET, { expiresIn: '2 days' })
+    
     res.status(200).json({
       token,
       user: {

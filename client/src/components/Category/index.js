@@ -5,17 +5,13 @@ export default ({ category, index }) => {
   const images = ['/images/grocery.png', '/images/fruit-veg.png', '/images/beverage.png', '/images/medicine.png', '/images/pkg.png']
 
   return (
-    <div className='cat-items-list'>
+    <article className='cat-items-list'>
       <Link to={`/orders/${category.name}/${category.id}`} style={{ textDecoration: 'none' }}>
-        <div className='cat-item-div'>
-          <div className='cat-image'>
-            <img width='80px' height='80px' src={images[index]} alt='Category' />
-          </div>
-          <p className='cat-name'>
-            {category.name}
-          </p>
-        </div>
+        <figure className='cat-item-div'>
+            <img className='cat-image' width='80px' height='80px' src={images[index]} alt='Category' />
+            <figcaption className='cat-name'>{category.name}</figcaption>
+        </figure>
       </Link>
-    </div>
+    </article>
   )
 }

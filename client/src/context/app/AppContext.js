@@ -7,47 +7,83 @@ const initialState = {
   itemsList: [],
   storeCats: [],
   cart: [],
-  storeAddress: ''
+  storeAddress: '',
+  tokenError: null
 }
 
 export const AppContext = createContext()
 
-export const AppContextProvider = (props) => {
+export const AppContextProvider = ({children}) => {
   const [state, dispatch] = useReducer(AppReducer, initialState)
 
   const getAllCategories = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
+      }
+    }
     try {
-      const response = await window.fetch('/dunzo/category/getCategories')
+      const response = await window.fetch('/dunzo/category/getCategories', options)
       const data = await response.json()
+      console.log('GET ALL CATD:', response, data)
+      if(data.msg) dispatch({ type: 'INVALID_TOKEN', payload: data })
       dispatch({ type: 'GET_CAT_LIST', payload: data })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
   }
-  const handleStoreAddress = (data) => {
-    dispatch({ type: 'HANDLE_STORE_ADDR', payload: data })
-  }
+
   const getStoresList = async (cat) => {
     const options = {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json;charset=UTF-8'
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
       }
     }
     try {
       const response = await window.fetch(`/dunzo/stores/getStoresList/${cat}`, options)
       const data = await response.json()
-      console.log('STORE LIST:', data)
-    
-      dispatch({ type: 'GET_STORE_LIST', payload: data })
+      console.log('DA:', data, data.msg)
+      if(data.msg){
+         dispatch({ type: 'INVALID_TOKEN', payload: data })
+         return
+      } 
+    dispatch({ type: 'GET_STORE_LIST', payload: data })
+    } catch (err) {
+      dispatch({ type: 'ERROR', payload: err })
+    }
+  }
+
+  const getStoreAddress = async (storeId) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
+      }
+    }
+    try {
+      const response = await window.fetch(`/dunzo/stores/getStoreAddress/${storeId}`, options)
+      const data = await response.json()
+      dispatch({ type: 'GET_STORE_ADDRESS', payload: data[0].address })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
   }
 
   const getAllItems = async (catId) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
+      }
+    }
     try {
-      const response = await window.fetch(`/dunzo/items/getAllItems/${catId}`)
+      const response = await window.fetch(`/dunzo/items/getAllItems/${catId}`, options)
       const data = await response.json()
       dispatch({ type: 'GET_ITEMS_LIST', payload: data })
     } catch (err) {
@@ -56,8 +92,15 @@ export const AppContextProvider = (props) => {
   }
 
   const getItems = async (store, selCatId) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
+      }
+    }
     try {
-      const response = await window.fetch(`/dunzo/items/getItems/?storeid=${store}&&catid=${selCatId}`)
+      const response = await window.fetch(`/dunzo/items/getItems/?storeid=${store}&&catid=${selCatId}`, options)
       const data = await response.json()
       dispatch({ type: 'GET_ITEMS_LIST', payload: data })
     } catch (err) {
@@ -66,8 +109,15 @@ export const AppContextProvider = (props) => {
   }
 
   const getItemsOfSelCategory = async (storeId,cat) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
+      }
+    }
     try {
-      const response = await window.fetch(`/dunzo/items/getItems/?storeid=${storeId}&&catid=${cat}`)
+      const response = await window.fetch(`/dunzo/items/getItems/?storeid=${storeId}&&catid=${cat}`, options)
       const data = await response.json()
       dispatch({ type: 'GET_ITEMS_LIST', payload: data })
     } catch (err) {
@@ -76,8 +126,15 @@ export const AppContextProvider = (props) => {
   }
 
   const getStoreCategories = async (storeId) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
+      }
+    }
     try {
-      const response = await window.fetch(`/dunzo/stores/getStoreCats/${storeId}`)
+      const response = await window.fetch(`/dunzo/stores/getStoreCats/${storeId}`, options)
       const data = await response.json()
       dispatch({ type: 'GET_STORE_CAT_LIST', payload: data })
     } catch (err) {
@@ -86,18 +143,18 @@ export const AppContextProvider = (props) => {
   }
 
   const getCartList = async (storeId, userId) => {
-    try {
-      const options = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          'x-auth-token': window.localStorage.getItem('token')
-        }
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'x-auth-token': window.localStorage.getItem('token')
       }
+    }
+    try {
       const response = await window.fetch(`/dunzo/cart/getCartList/?storeid=${storeId}&&userid=${userId}`, options)
       const data = await response.json()
-      // dispatch({ type: 'GET_CART_LIST', payload: data })
-      data.length ? dispatch({ type: 'GET_CART_LIST', payload: data }) : dispatch({ type: 'ERROR', payload: data.message })
+      dispatch({ type: 'GET_CART_LIST', payload: data })
+      // data.length ? dispatch({ type: 'GET_CART_LIST', payload: data }) : dispatch({ type: 'ERROR', payload: data.message })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
@@ -170,7 +227,6 @@ export const AppContextProvider = (props) => {
     try {
       const response = await window.fetch(`/dunzo/cart/deleteAllCart/${storeId}`, options)
       await response.json()
-      console.log('DELETE ALL ITEMS Context:')
       dispatch({ type: 'DELETE_ALL_CART' })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
@@ -185,6 +241,7 @@ export const AppContextProvider = (props) => {
       storeCats: state.storeCats,
       cart: state.cart,
       storeAddress: state.storeAddress,
+      tokenError: state.tokenError,
       getAllCategories: getAllCategories,
       getStoresList: getStoresList,
       getAllItems: getAllItems,
@@ -196,10 +253,10 @@ export const AppContextProvider = (props) => {
       deleteCartItem: deleteCartItem,
       getCartList: getCartList,
       deleteAllCartItems: deleteAllCartItems,
-      handleStoreAddress: handleStoreAddress
+      getStoreAddress: getStoreAddress
     }}
     >
-      {props.children}
+      {children}
     </AppContext.Provider>
   )
 }

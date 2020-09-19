@@ -1,10 +1,7 @@
 const router = require('express').Router()
-const { getCategories, getDeliveries, addToDeliveries, deleteDeliveries } = require('./model')
+const { getCategories } = require('./model')
+const authorize = require('../middleware/authorize')
 
-router.get('/getCategories', getCategories)
-
-router.get('/getDeliveries', getDeliveries)
-router.post('/addToDeliveries', addToDeliveries)
-router.delete('/deleteDeliveries', deleteDeliveries)
+router.get('/getCategories', authorize, getCategories)
 
 module.exports = router

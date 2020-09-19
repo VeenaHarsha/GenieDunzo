@@ -3,7 +3,7 @@ import { AuthContext } from '../../context/auth/AuthContext'
 import { Link, Redirect } from 'react-router-dom'
 
 function Login () {
-  const { token, login, error, isAuthenticated, loadUser } = useContext(AuthContext)
+  const { token, login, error, isAuthenticated } = useContext(AuthContext)
 
   const [isLogin, setIsLogin] = useState(false)
   const [user, setUser] = useState({
@@ -36,10 +36,10 @@ function Login () {
     <Redirect to='/home' />
   )
     : (
-      <div className='login-container'>
+      <main className='login-container'>
         <form className='user-login-form' onSubmit={loginTrello}>
-          {error && <h3 className='login-error'>{error.message}</h3>}
-          <p className='login-text'> Login Please!</p>
+          {error && <details className='login-error'>{error.message}</details>}
+          <summary className='login-text'> Login Please!</summary>
           <input
             type='text'
             className='login-input'
@@ -67,10 +67,10 @@ function Login () {
           </button>
         </form>
      
-        <p className='footer-text'>
-            Don't have an account. <Link to='/register' style={{ textDecoration: 'none' }}>Register New User</Link>
-        </p>
-      </div>
+        <footer className='footer-text'>
+            Don't have an account. <Link to='/register' className='link-style'>Register New User</Link>
+        </footer>
+      </main>
     )
 }
 export default Login

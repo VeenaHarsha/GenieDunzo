@@ -4,31 +4,21 @@ export default (state, action) => {
     case 'GET_CAT_LIST': {
       return {
         ...state,
-        categoryList: action.payload
+        categoryList: action.payload,
+        tokenError: null
       }
     }
-
-    case 'HANDLE_CAT_CLICK': {
-       window.localStorage.setItem('selCategoryId', action.payload.selCatId)
-       window.localStorage.setItem('selCategoryName', action.payload.selCatName)
-      return {
-        ...state,
-        selCatId: action.payload.selCatId,
-        selCatName: action.payload.selCatName
-      }
-    }
-
     case 'GET_STORE_LIST': {
       return {
         ...state,
         storeList: action.payload 
       }
     }
-    case 'HANDLE_STORE_ADDR': {
-      console.log('action.payload.storeAddress', action.payload.storeAddress)
+    case 'GET_STORE_ADDRESS': {
+      console.log('am:', action.payload)
       return {
         ...state,
-        storeAddress: action.payload.storeAddress
+        storeAddress: action.payload
       }
     }
     case 'GET_ITEMS_LIST': {
@@ -84,12 +74,13 @@ export default (state, action) => {
         cart: action.payload
       }
     }
-    case 'ERROR': {
+    case 'ERROR': 
+    case 'INVALID_TOKEN':
       return {
         ...state,
-        'Error: ': action.payload
+        tokenError: action.payload
       }
-    }
+    
     default:
       return state
   }
