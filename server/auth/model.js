@@ -23,7 +23,7 @@ const loginUser = async (req, res) => {
     const user = await pool.query(
       `SELECT id, username, password, deliverypartner FROM tblusers WHERE email = '${email}'`
     );
-    console.log("LOGGED IN USER IS:", user.rowCount, user.rows[0]);
+    // console.log("LOGGED IN USER IS:", user.rowCount, user.rows[0]);
     if (!user.rowCount) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
