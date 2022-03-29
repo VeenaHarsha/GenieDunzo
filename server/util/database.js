@@ -1,17 +1,19 @@
-const { Pool } = require('pg')
+const { Pool } = require("pg");
 
 const pool = new Pool({
-  user: 'postgres',
-  password: 'qwerty',
-  host: 'localhost',
-  database: 'dunzo',
-  port: 5432
-})
+  user: process.env.REACT_APP_DB_USER,
+  password: process.env.REACT_APP_DB_PWD,
+  host: process.env.REACT_APP_HOST,
+  database: process.env.REACT_APP_DATABASE,
+  port: process.env.DB_PORT,
+});
+
 const query = async (sql, params) => {
   try {
-    return await pool.query(sql, params)
+    return await pool.query(sql, params);
   } catch (err) {
-    console.log('ERROR:', err)
+    console.log("ERROR:", err);
   }
-}
-module.exports = { query }
+};
+
+module.exports = { query };

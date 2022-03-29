@@ -5,9 +5,7 @@ import App from './App'
 
 ReactDOM.render(
   <BrowserRouter>
-    {/* <AuthContextProvider> */}
       <App />
-    {/* </AuthContextProvider> */}
   </BrowserRouter>,
   document.getElementById('root')
 )
