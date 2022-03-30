@@ -153,8 +153,3 @@ UPDATE sometable SET geog = ST_GeogFromText('SRID=4326;POINT(' || lon || ' ' || 
 SELECT ST_AsEWKT(ST_GeogFromText('SRID=4267;POINT(-77.0092 38.889588)'));
 
 SELECT ST_Distance(ST_GeogFromWKB('SRID=4267;POINT(-77.0092 38.889588)')
-
---https://postgis.net/docs/manual-2.1/using_postgis_dbmanagement.html#Geography_Basics
--- http://postgis.net/workshops/postgis-intro/geometries.html
--- https://w3resource.com/PostgreSQL/postgresql-geometric-functions-and-operators.php
--- https://stackoverflow.com/questions/8150721/which-data-type-for-latitude-and-longitude#:~:text=5%20Answers&text=You%20can%20use%20the%20data,(%3D%20float8%20or%20double%20precision%20).

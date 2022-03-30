@@ -8,7 +8,6 @@ const devConfig = {
   host: process.env.REACT_APP_HOST,
   database: process.env.REACT_APP_DATABASE,
   port: process.env.DB_PORT,
-  ssl: true,
 };
 const prodConfig = {
   connectionString: process.env.DATABASE_URL,

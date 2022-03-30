@@ -100,3 +100,8 @@ INSERT INTO items (storecatid,itemname,price) values ( 1, 'Beans', 35.90);
 INSERT INTO items (storecatid,itemname,price) values ( 2, 'Apple', 180.50);
 INSERT INTO items (storecatid,itemname,price) values ( 2, 'Orange', 45.99);
 
+
+--https://postgis.net/docs/manual-2.1/using_postgis_dbmanagement.html#Geography_Basics
+-- http://postgis.net/workshops/postgis-intro/geometries.html
+-- https://w3resource.com/PostgreSQL/postgresql-geometric-functions-and-operators.php
+-- https://stackoverflow.com/questions/8150721/which-data-type-for-latitude-and-longitude#:~:text=5%20Answers&text=You%20can%20use%20the%20data,(%3D%20float8%20or%20double%20precision%20).
